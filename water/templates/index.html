@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <meta charset='utf-8'>
+    <title>Prediction Page</title>
+    <style type="text/css">
+        body {
+            background-image: url("{% static 'predict.webp' %}");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        .main{
+            position: fixed;
+            top: 90px;
+            left: 410px;
+            width: 550px;
+            background-color:#ffffff;
+            border-radius: 10px;
+            text-align: center;
+            padding: 5%;
+        }
+        h4{
+            color: #0086b3;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        input[type=button]{
+            background-color: #4dc3ff;
+            border: 2px;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h4>Please Enter the Following Information:</h4>
+        <form action="/" method="POST" >
+            <center>
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td align="right">pH:</td>
+                    <td align="left"><input id = "1" type="text" name="n1" required></td> 
+                </tr>
+                <tr>
+                    <td align="right">Hardness:</td>
+                    <td align="left"><input id = "2" type="text" name="n2" required></td> 
+                </tr>
+                <tr>
+                    <td align="right">Solids:</td>
+                    <td align="left"><input id = "3" type="text" name="n3" required></td> 
+                </tr>
+                <tr>
+                    <td align="right">Chloramines :</td>
+                    <td align="left"><input id = "4" type="text" name="n4" required></td> 
+                </tr>
+                <tr>
+                    <td align="right">Sulfate :</td>
+                    <td align="left"><input id = "5" type="text" name="n5" required></td> 
+                </tr>
+                <tr>
+                    <td align="right">Conductivity:</td>
+                    <td align="left"><input id = "6" type="text" name="n6" required></td> 
+                </tr>
+                <tr>
+                    <td align="right">Organic Carbon:</td>
+                    <td align="left"><input id = "7" type="text" name="n7" required></td> 
+                </tr>
+                <tr>
+                    <td align="right">Trihalomethanes:</td>
+                    <td align="left"><input id = "8" type="text" name="n8" required></td>
+                </tr>
+                <tr>
+                    <td align="right">Turbidity:</td>
+                    <td align="left"><input id = "9" type="text" name="n8" required></td>
+                </tr>
+                
+            </table>
+            <br>
+            <input id ="b1" type="button" style="width: 70px;" value="Result">
+            </center>
+
+        </form>
+        <p id="p"></p>
+        <a href='main/'>
+            <span class="glyphicon glyphicon-log-out"></span> Home
+        </a>&nbsp;
+        <a href='index/'>
+            <span class="glyphicon glyphicon-log-out"></span> Reset
+        </a>
+    </div>
+<script>
+    $("#b1").click(function(){
+        var pH = $("#1").val();
+        var Hardness = $("#2").val();
+        var Solids = $("#3").val();
+        var Chloramines = $("#4").val();
+        var Sulfate = $("#5").val();
+        var Conductivity = $("#6").val();
+        var Organic_Carbon = $("#7").val();
+        var Trihalomethanes = $("#8").val();
+        var Turbidity = $("#9").val();
+
+        //console.log(pH)
+        $.ajax({
+        type : "post",
+        url : "",
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}',
+        pH,Hardness, 
+        Solids, 
+        Chloramines,
+        Sulfate,
+        Conductivity,
+        Organic_Carbon,
+        Trihalomethanes,
+        Turbidity
+                },
+        success: function(resp)
+        {
+            $("#p").html(" ")
+            $("#p").append("Predicted Quality : ")
+            $("#p").append(resp)
+        }
+      })
+    })
+    </script>
+
+</body>
+</html>
